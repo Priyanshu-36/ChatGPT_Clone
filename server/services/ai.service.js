@@ -73,7 +73,14 @@ export async function generateResponse(question, previousMessages = []) {
     },
   ];
 
+  const MAX_RETRIES = 10;
+  let count = 0;
+
   while (true) {
+    if (count > MAX_RETRIES) {
+      return "Sorry, I am unable to provide a response at this time. Please try again later.";
+    }
+    count++;
     const response = await groq.chat.completions.create({
       model: "openai/gpt-oss-120b",
 
